@@ -11,9 +11,9 @@ const lerClientes = async () => {
 const criarCliente = async (cliente) => {
     
     const opcoes = {
-        method: 'POST',
-        body: JSON.stringify(cliente),
-        headers: {
+        'method': 'POST',
+        'body': JSON.stringify(cliente),
+        'headers': {
             'content-type':'application/json'
         }
 
@@ -24,7 +24,17 @@ const criarCliente = async (cliente) => {
 
 }
 
+const deletarCliente = async (posicao) => {
+    const opcoes = {
+        'method':'DELETE'
+    }
+    
+    const response = await fetch(`${url}/${posicao}`, opcoes)
+    console.log(response.ok)
+}
+
 export{
     lerClientes,
-    criarCliente
+    criarCliente,
+    deletarCliente
 }

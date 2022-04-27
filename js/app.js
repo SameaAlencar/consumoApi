@@ -1,7 +1,7 @@
 'use strict'
 
 import{openModal, closeModal} from './modal.js'
-import{lerClientes, criarCliente} from './clientes.js'
+import{lerClientes, criarCliente, deletarCliente} from './clientes.js'
 
 
 const criarLinha = (cliente)=>{
@@ -13,8 +13,8 @@ const criarLinha = (cliente)=>{
             <td>${cliente.celular}</td>
             <td>${cliente.cidade}</td>
             <td>
-                <button type="button" class="button green">editar</button>
-                <button type="button" class="button red">excluir</button>
+                <button type="button" class="button green" id="editar"-${cliente.id}>editar</button>
+                <button type="button" class="button red" id="excluir"-${cliente.id}>excluir</button>
             </td> 
         `
 
@@ -37,7 +37,7 @@ const atualizarTabela = async () =>{
 
 } 
 
-atualizarTabela()
+
 
 // Eventos 
 
@@ -64,7 +64,30 @@ const salvarCliente = async () => {
     atualizarTabela()
 
 }
+
+
+    const editarExcluir = async (cursor) => {
+        if(cursor.target.type == 'button'){
+
+            const [botao, posicao] = cursor.target.id.split('-')
+            if(botao == 'editar'){
+                
+                //função para editar o cliente
+        }else if(botao == 'excluir'){
+            await deletarCliente(posicao)
+            atualizarTabela()
+
+        }
+       
+
+    }
+}
+
+atualizarTabela()
+
+
 document.getElementById('cadastrarCliente').addEventListener('click', openModal)
 document.getElementById('salvar').addEventListener('click', salvarCliente)
+document.getElementById('cliente-container').addEventListener('click', editarExcluir)
 
 
