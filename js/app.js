@@ -4,17 +4,17 @@ import{openModal, closeModal} from './modal.js'
 import{lerClientes, criarCliente, deletarCliente} from './clientes.js'
 
 
-const criarLinha = (cliente)=>{
+const criarLinha = (nome, email. celular, cidade, id)=>{
 
     const linha = document.createElement('tr')
     linha.innerHTML = `
-            <td>${cliente.nome}</td>
-            <td>${cliente.email}</td>
-            <td>${cliente.celular}</td>
-            <td>${cliente.cidade}</td>
+            <td>${nome}</td>
+            <td>${email}</td>
+            <td>${celular}</td>
+            <td>${cidade}</td>
             <td>
-                <button type="button" class="button green" id="editar"-${cliente.id}>editar</button>
-                <button type="button" class="button red" id="excluir"-${cliente.id}>excluir</button>
+                <button type="button" class="button green" onClick="editarExcluir(${id})" >editar</button>
+                <button type="button" class="button red" onClick="delCliente(${id})" >excluir</button>
             </td> 
         `
 
@@ -65,29 +65,36 @@ const salvarCliente = async () => {
 
 }
 
+const delCliente = (id) => {
+    await deletarCliente(id)
+    atualizarTabela()
 
-    const editarExcluir = async (cursor) => {
-        if(cursor.target.type == 'button'){
+}
 
-            const [botao, posicao] = cursor.target.id.split('-')
-            if(botao == 'editar'){
+
+//     const editarExcluir = async (cursor) => {
+//         if(cursor.target.type == 'button'){
+
+//             const [botao, posicao] = cursor.target.id.split('-')
+
+//             if(botao == 'editar'){
                 
-                //função para editar o cliente
-        }else if(botao == 'excluir'){
-            await deletarCliente(posicao)
-            atualizarTabela()
+//                 //função para editar o cliente
+//         }else if(botao == 'excluir'){
+//             await deletarCliente(posicao)
+//             atualizarTabela()
 
-        }
+//         }
        
 
-    }
-}
+//     }
+// }
 
 atualizarTabela()
 
 
 document.getElementById('cadastrarCliente').addEventListener('click', openModal)
 document.getElementById('salvar').addEventListener('click', salvarCliente)
-document.getElementById('cliente-container').addEventListener('click', editarExcluir)
+//document.getElementById('clientes-container').addEventListener('click', editarExcluir)
 
 
