@@ -41,6 +41,9 @@ const atualizarTabela = async () =>{
 const ehEdicao = () => document.getElementById('nome').hasAttribute('data-id')
 
 const salvarCliente = async () => {
+
+    const form = document.getElementById('modal-form')
+
     //criar um json com as informações do cliente
 
     const cliente = {
@@ -48,23 +51,26 @@ const salvarCliente = async () => {
         "nome": document.getElementById('nome').value,
         "email": document.getElementById('email').value,
         "celular": document.getElementById('celular').value,
-        "cidade": document.getElementById('cidade').value
+        "cidade": document.getElementById('cidade').value,
+        "foto": document.getElementById('modal-image').src
       }
 
-      if(ehEdicao()){
-          cliente.id = document.getElementById('nome').dataset.id
-          await atualizarClientes(cliente)
-      }else{
-          //Enviar o json para o servidor API
-            await criarCliente(cliente)
+    if(form.reportValidity()){
+          if(ehEdicao()){
+              cliente.id = document.getElementById('nome').dataset.id
+            await atualizarClientes(cliente)
+        }else{
+            //Enviar o json para o servidor API
+             await criarCliente(cliente)
 
       }
 
-    //Fechar a modal
-    closeModal()
+        //Fechar a modal
+        closeModal()
     
-    //Atualizar tabela 
-    atualizarTabela()
+        //Atualizar tabela 
+        atualizarTabela()
+    }
 
 }
 
@@ -74,6 +80,7 @@ const preencherForm = (cliente) => {
     document.getElementById('celular').value = cliente.celular
     document.getElementById('cidade').value = cliente.cidade
     document.getElementById('nome').dataset.id = cliente.id
+    document.getElementById('modal-image').src= cliente.foto
 
 }
 
@@ -116,11 +123,26 @@ globalThis.delCliente = async (id) => {
 //     }
 // }
 
+const mascaraCelular = ({target}) =>{
+
+    let text = target.value
+
+    text = text.replace(/[^0-9]/, '')
+    text = text.replace(/(^..)(.)/, '($1')
+    text = text.replace(/(^.{4})/, '$1)')
+    text = text.replace(/(.{7})/,'$1-$2')
+
+    target.value = text
+}
+
+
+
 atualizarTabela()
 
 
 document.getElementById('cadastrarCliente').addEventListener('click', openModal)
 document.getElementById('salvar').addEventListener('click', salvarCliente)
+document.getElementById('celular').addEventListener('keyup', mascaraCelular)
 //document.getElementById('clientes-container').addEventListener('click', editarExcluir)
 
 
